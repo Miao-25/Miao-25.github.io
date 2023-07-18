@@ -1,0 +1,778 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>流密码 | Miaoo~</title><meta name="author" content="miaomiao"><meta name="copyright" content="miaomiao"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="流密码（Stream cipher） 流密码 | Lazzaro (lazzzaro.github.io) 密码学复习——第二章（流密码）-阿里云开发者社区 (aliyun.com) (144条消息) 流密码（一次一密、流密码&#x2F;序列密码、LFSR、RC4)_Yongliang Xu的博客-CSDN博客  明文逐位与密钥流进行异或运算，生成密文流 又称序列密码 对称加密算法，加密和解密双方使用相同伪">
+<meta property="og:type" content="article">
+<meta property="og:title" content="流密码">
+<meta property="og:url" content="http://example.com/post/fb8b77a1.html">
+<meta property="og:site_name" content="Miaoo~">
+<meta property="og:description" content="流密码（Stream cipher） 流密码 | Lazzaro (lazzzaro.github.io) 密码学复习——第二章（流密码）-阿里云开发者社区 (aliyun.com) (144条消息) 流密码（一次一密、流密码&#x2F;序列密码、LFSR、RC4)_Yongliang Xu的博客-CSDN博客  明文逐位与密钥流进行异或运算，生成密文流 又称序列密码 对称加密算法，加密和解密双方使用相同伪">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s1.ax1x.com/2023/05/13/p96pI91.jpg">
+<meta property="article:published_time" content="2023-07-16T12:08:00.000Z">
+<meta property="article:modified_time" content="2023-07-18T12:21:16.073Z">
+<meta property="article:author" content="miaomiao">
+<meta property="article:tag" content="流密码">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s1.ax1x.com/2023/05/13/p96pI91.jpg"><link rel="shortcut icon" href="/img/77.jpg"><link rel="canonical" href="http://example.com/post/fb8b77a1.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><meta/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"languages":{"hits_empty":"找不到您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  }
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '流密码',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-07-18 20:21:16'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          const now = new Date()
+          const hour = now.getHours()
+          const isNight = hour <= 6 || hour >= 18
+          if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+          else if (t === 'light') activateLightMode()
+          else activateDarkMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/custom.css" media="defer" onload="this.media='all'"><!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.2"><link href="https://cdn.bootcss.com/KaTeX/0.11.1/katex.min.css" rel="stylesheet" /></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/66.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">15</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">13</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">5</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://s1.ax1x.com/2023/05/13/p96pI91.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="Miaoo~"><span class="site-name">Miaoo~</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">流密码</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-07-16T12:08:00.000Z" title="发表于 2023-07-16 20:08:00">2023-07-16</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-07-18T12:21:16.073Z" title="更新于 2023-07-18 20:21:16">2023-07-18</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%9F%A5%E8%AF%86/">知识</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="流密码"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1>流密码（<strong>Stream cipher</strong>）</h1>
+<p><a target="_blank" rel="noopener" href="https://lazzzaro.github.io/2020/11/07/crypto-%E6%B5%81%E5%AF%86%E7%A0%81/">流密码 | Lazzaro (lazzzaro.github.io)</a></p>
+<p><a target="_blank" rel="noopener" href="https://developer.aliyun.com/article/803607#slide-0">密码学复习——第二章（流密码）-阿里云开发者社区 (aliyun.com)</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_46733442/article/details/107413687">(144条消息) 流密码（一次一密、流密码/序列密码、LFSR、RC4)_Yongliang Xu的博客-CSDN博客</a></p>
+<ul>
+<li>明文逐位与密钥流进行异或运算，生成密文流</li>
+<li>又称序列密码</li>
+<li>对称加密算法，加密和解密双方使用相同伪随机加密数据流（pseudo-random stream）作为密钥</li>
+<li>流密码的安全性依赖于生成高质量的密钥流。</li>
+<li>密钥流应该是伪随机的，不可预测的，并且对于同一个密钥，不应该重复出现。</li>
+</ul>
+<h2 id="二元加法流密码">二元加法流密码</h2>
+<p>一种基于二进制加法运算的流密码算法。它使用一个密钥流和明文流进行逐位的二进制加法运算，生成密文流</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/post/fb8b77a1/8128be7b4e454f89aab7f8d2ce984b0b.png" alt="img"></p>
+<h2 id="一次一密-one-time-pad">一次一密（one-time pad）</h2>
+<ul>
+<li>
+<p>又称Vernam加密法</p>
+</li>
+<li>
+<p>将明文与随机生成的密钥进行异或运算来实现加密和解密</p>
+</li>
+<li>
+<p>密钥：与明文等长、完全随机、只使用一次，并且发送者和接收者在事先共享同一密钥。</p>
+</li>
+<li>
+<p>不能提供完整性验证和认证</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/post/fb8b77a1/1.png" alt="在这里插入图片描述"></p>
+</li>
+</ul>
+<p>一次一密的密钥长度和明文一样长，流密码不是，需要种子密钥通过密钥生成器产生密钥流</p>
+<h2 id="多次一密-many-time-pad-attack">多次一密（Many Time Pad Attack）</h2>
+<p><a target="_blank" rel="noopener" href="https://www.ruanx.net/many-time-pad/">Many-Time-Pad 攻击 (ruanx.net)</a></p>
+<p>多次一密攻击的关键在于密钥重复使用。由于密钥序列在多次加密中重复使用，攻击者可以通过异或运算的性质，推断出密钥流的一部分或全部内容，从而破解密钥和解密密文。</p>
+<h3 id="异或运算性质">异或运算性质</h3>
+<p class="katex-block"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext>异或运算的性质</mtext><mspace linebreak="newline"></mspace><mtext>交换律                     </mtext><mi>a</mi><mo>⊕</mo><mi>b</mi><mo>=</mo><mi>b</mi><mo>⊕</mo><mi>a</mi><mspace linebreak="newline"></mspace><mtext>结合律    </mtext><mi>a</mi><mo>⊕</mo><mi>b</mi><mo>⊕</mo><mi>c</mi><mo>=</mo><mi>a</mi><mo>⊕</mo><mo stretchy="false">(</mo><mi>b</mi><mo>⊕</mo><mi>c</mi><mo stretchy="false">)</mo><mspace linebreak="newline"></mspace><mtext>规定        </mtext><mi>a</mi><mo>⊕</mo><mi>a</mi><mo>=</mo><mn>0</mn><mtext>      </mtext><mi>a</mi><mo>⊕</mo><mn>0</mn><mo>=</mo><mi>a</mi><mspace linebreak="newline"></mspace><mtext>自反性      </mtext><mi>a</mi><mo>⊕</mo><mi>b</mi><mo>⊕</mo><mi>b</mi><mo>=</mo><mi>a</mi><mo>⊕</mo><mn>0</mn><mo>=</mo><mi>a</mi><mspace linebreak="newline"></mspace><mtext>可移项性  </mtext><mi>a</mi><mo>⊕</mo><mi>b</mi><mo>=</mo><mi>c</mi><mo>−</mo><mo>&gt;</mo><mi>a</mi><mo>=</mo><mi>b</mi><mo>⊕</mo><mi>c</mi></mrow><annotation encoding="application/x-tex">异或运算的性质\\
+交换律\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  a⊕b=b⊕a\\
+结合律\ \ \ \  a⊕b⊕c=a⊕(b⊕c)\\
+规定  \ \ \ \ \ \ \ \ a⊕a=0\ \ \ \ \ \ a⊕0=a\\
+自反性\ \ \ \  \ \ a⊕b⊕b=a⊕0=a\\
+可移项性\ \ a⊕b = c -&gt; a = b⊕c
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord cjk_fallback">异</span><span class="mord cjk_fallback">或</span><span class="mord cjk_fallback">运</span><span class="mord cjk_fallback">算</span><span class="mord cjk_fallback">的</span><span class="mord cjk_fallback">性</span><span class="mord cjk_fallback">质</span></span><span class="mspace newline"></span><span class="base"><span class="strut" style="height:0.76666em;vertical-align:-0.08333em;"></span><span class="mord cjk_fallback">交</span><span class="mord cjk_fallback">换</span><span class="mord cjk_fallback">律</span><span class="mspace"> </span><span class="mspace"> </span><span class="mspace"> </span><span class="mspace"> </span><span class="mspace"> </span><span class="mspace"> </span><span class="mspace"> </span><span class="mspace"> </span><span class="mspace"> </span><span class="mspace"> </span><span class="mspace"> </span><span class="mspace"> </span><span class="mspace"> </span><span class="mspace"> </span><span class="mspace"> </span><span class="mspace"> </span><span class="mspace"> </span><span class="mspace"> </span><span class="mspace"> </span><span class="mspace"> </span><span class="mspace"> </span><span class="mord mathdefault">a</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⊕</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathdefault">b</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.77777em;vertical-align:-0.08333em;"></span><span class="mord mathdefault">b</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⊕</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault">a</span></span><span class="mspace newline"></span><span class="base"><span class="strut" style="height:0.76666em;vertical-align:-0.08333em;"></span><span class="mord cjk_fallback">结</span><span class="mord cjk_fallback">合</span><span class="mord cjk_fallback">律</span><span class="mspace"> </span><span class="mspace"> </span><span class="mspace"> </span><span class="mspace"> </span><span class="mord mathdefault">a</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⊕</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.77777em;vertical-align:-0.08333em;"></span><span class="mord mathdefault">b</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⊕</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault">c</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.66666em;vertical-align:-0.08333em;"></span><span class="mord mathdefault">a</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⊕</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathdefault">b</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⊕</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault">c</span><span class="mclose">)</span></span><span class="mspace newline"></span><span class="base"><span class="strut" style="height:0.76666em;vertical-align:-0.08333em;"></span><span class="mord cjk_fallback">规</span><span class="mord cjk_fallback">定</span><span class="mspace"> </span><span class="mspace"> </span><span class="mspace"> </span><span class="mspace"> </span><span class="mspace"> </span><span class="mspace"> </span><span class="mspace"> </span><span class="mspace"> </span><span class="mord mathdefault">a</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⊕</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault">a</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.72777em;vertical-align:-0.08333em;"></span><span class="mord">0</span><span class="mspace"> </span><span class="mspace"> </span><span class="mspace"> </span><span class="mspace"> </span><span class="mspace"> </span><span class="mspace"> </span><span class="mord mathdefault">a</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⊕</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">0</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault">a</span></span><span class="mspace newline"></span><span class="base"><span class="strut" style="height:0.76666em;vertical-align:-0.08333em;"></span><span class="mord cjk_fallback">自</span><span class="mord cjk_fallback">反</span><span class="mord cjk_fallback">性</span><span class="mspace"> </span><span class="mspace"> </span><span class="mspace"> </span><span class="mspace"> </span><span class="mspace"> </span><span class="mspace"> </span><span class="mord mathdefault">a</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⊕</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.77777em;vertical-align:-0.08333em;"></span><span class="mord mathdefault">b</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⊕</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathdefault">b</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.66666em;vertical-align:-0.08333em;"></span><span class="mord mathdefault">a</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⊕</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">0</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault">a</span></span><span class="mspace newline"></span><span class="base"><span class="strut" style="height:0.76666em;vertical-align:-0.08333em;"></span><span class="mord cjk_fallback">可</span><span class="mord cjk_fallback">移</span><span class="mord cjk_fallback">项</span><span class="mord cjk_fallback">性</span><span class="mspace"> </span><span class="mspace"> </span><span class="mord mathdefault">a</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⊕</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathdefault">b</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.66666em;vertical-align:-0.08333em;"></span><span class="mord mathdefault">c</span><span class="mord">−</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">&gt;</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault">a</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.77777em;vertical-align:-0.08333em;"></span><span class="mord mathdefault">b</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⊕</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault">c</span></span></span></span></span></p>
+<p>这个攻击的原理是 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>c</mi><mn>1</mn></msub><mo>⊕</mo><msub><mi>c</mi><mn>2</mn></msub><mo>=</mo><mo stretchy="false">(</mo><msub><mi>m</mi><mn>1</mn></msub><mo>⊕</mo><mi>k</mi><mi>e</mi><mi>y</mi><mo stretchy="false">)</mo><mo>⊕</mo><mo stretchy="false">(</mo><msub><mi>m</mi><mn>2</mn></msub><mo>⊕</mo><mi>k</mi><mi>e</mi><mi>y</mi><mo stretchy="false">)</mo><mo>=</mo><msub><mi>m</mi><mn>1</mn></msub><mo>⊕</mo><msub><mi>m</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">c_1⊕c_2 =(m_1⊕key)⊕(m_2⊕key)= m_1⊕m_2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.73333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault">c</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⊕</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.58056em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault">c</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord"><span class="mord mathdefault">m</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⊕</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.03148em;">k</span><span class="mord mathdefault">e</span><span class="mord mathdefault" style="margin-right:0.03588em;">y</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⊕</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord"><span class="mord mathdefault">m</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⊕</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.03148em;">k</span><span class="mord mathdefault">e</span><span class="mord mathdefault" style="margin-right:0.03588em;">y</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.73333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault">m</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⊕</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.58056em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault">m</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>，而通过 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>c</mi><mn>1</mn></msub><mo>⊕</mo><msub><mi>c</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">c_1⊕c_2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.73333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault">c</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⊕</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.58056em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault">c</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 可以分析出 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>m</mi><mn>1</mn></msub><mo>⊕</mo><msub><mi>m</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">m_1⊕m_2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.73333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault">m</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⊕</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.58056em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault">m</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>，因此 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>m</mi><mn>1</mn></msub><mo>⊕</mo><msub><mi>m</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">m_1⊕m_2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.73333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault">m</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⊕</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.58056em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault">m</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 不再安全。</p>
+<p>两个密文的异或，就等于对应明文的异或,可以通过频率分析，来破译这些密文。</p>
+<h3 id="ascii表">ascii表</h3>
+<p>ascii 码表在 Linux 下可以通过 <code>man ascii</code> 指令查看。它的性质有：</p>
+<ul>
+<li><code>0x20</code> 是空格。 低于 <code>0x20</code> 的，全部是起特殊用途的字符； <code>0x20~0x7E</code> 的，是可打印字符。</li>
+<li><code>0x30~0x39</code> 是数字 <code>0,1,2...9</code>。</li>
+<li><code>0x41~0x5A</code> 是大写字母 <code>A-Z</code>； <code>0x61~0x7A</code> 是小写字母 <code>a-z</code></li>
+</ul>
+<p>小写字母 ⊕ 空格，会得到对应的大写字母；大写字母 ⊕ 空格，会得到小写字母！所以，如果x ⊕ y得到一个英文字母，那么中的某一个有很大概率是空格</p>
+<h3 id="例题-afctf2018-你听过一次一密么？">例题–[AFCTF2018]你听过一次一密么？</h3>
+<h4 id="题目">题目</h4>
+<pre class="line-numbers language-none"><code class="language-none">25030206463d3d393131555f7f1d061d4052111a19544e2e5d
+0f020606150f203f307f5c0a7f24070747130e16545000035d
+1203075429152a7020365c167f390f1013170b1006481e1314
+0f4610170e1e2235787f7853372c0f065752111b15454e0e09
+081543000e1e6f3f3a3348533a270d064a02111a1b5f4e0a18
+0909075412132e247436425332281a1c561f04071d520f0b11
+4116111b101e2170203011113a69001b475206011552050219
+041006064612297020375453342c17545a01451811411a470e
+021311114a5b0335207f7c167f22001b44520c15544801125d
+06140611460c26243c7f5c167f3d015446010053005907145d
+0f05110d160f263f3a7f4210372c03111313090415481d49<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>攻击击过程显而易见：对于每一条密文c1，拿去异或其他所有密文。然后去数每一列有多少个英文字符，作为c1在这一位是空格的评分。</p>
+<p>上面的事情做完时候，依据评分从大到小排序，依次利用 “某个明文的某一位是空格” 这种信息恢复出所有明文的那一列。如果产生冲突，则舍弃掉评分小的。</p>
+<p>脚本：</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment">#脚本1</span>
+<span class="token keyword">import</span> Crypto<span class="token punctuation">.</span>Util<span class="token punctuation">.</span>strxor <span class="token keyword">as</span> xo
+<span class="token keyword">import</span> libnum<span class="token punctuation">,</span> codecs<span class="token punctuation">,</span> numpy <span class="token keyword">as</span> np
+
+<span class="token keyword">def</span> <span class="token function">isChr</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">if</span> <span class="token builtin">ord</span><span class="token punctuation">(</span><span class="token string">'a'</span><span class="token punctuation">)</span> <span class="token operator">&lt;=</span> x <span class="token keyword">and</span> x <span class="token operator">&lt;=</span> <span class="token builtin">ord</span><span class="token punctuation">(</span><span class="token string">'z'</span><span class="token punctuation">)</span><span class="token punctuation">:</span> <span class="token keyword">return</span> <span class="token boolean">True</span>
+    <span class="token keyword">if</span> <span class="token builtin">ord</span><span class="token punctuation">(</span><span class="token string">'A'</span><span class="token punctuation">)</span> <span class="token operator">&lt;=</span> x <span class="token keyword">and</span> x <span class="token operator">&lt;=</span> <span class="token builtin">ord</span><span class="token punctuation">(</span><span class="token string">'Z'</span><span class="token punctuation">)</span><span class="token punctuation">:</span> <span class="token keyword">return</span> <span class="token boolean">True</span>
+    <span class="token keyword">return</span> <span class="token boolean">False</span>
+
+
+<span class="token keyword">def</span> <span class="token function">infer</span><span class="token punctuation">(</span>index<span class="token punctuation">,</span> pos<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">if</span> msg<span class="token punctuation">[</span>index<span class="token punctuation">,</span> pos<span class="token punctuation">]</span> <span class="token operator">!=</span> <span class="token number">0</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span>
+    msg<span class="token punctuation">[</span>index<span class="token punctuation">,</span> pos<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token builtin">ord</span><span class="token punctuation">(</span><span class="token string">' '</span><span class="token punctuation">)</span>
+    <span class="token keyword">for</span> x <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token builtin">len</span><span class="token punctuation">(</span>c<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">if</span> x <span class="token operator">!=</span> index<span class="token punctuation">:</span>
+            msg<span class="token punctuation">[</span>x<span class="token punctuation">]</span><span class="token punctuation">[</span>pos<span class="token punctuation">]</span> <span class="token operator">=</span> xo<span class="token punctuation">.</span>strxor<span class="token punctuation">(</span>c<span class="token punctuation">[</span>x<span class="token punctuation">]</span><span class="token punctuation">,</span> c<span class="token punctuation">[</span>index<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">[</span>pos<span class="token punctuation">]</span> <span class="token operator">^</span> <span class="token builtin">ord</span><span class="token punctuation">(</span><span class="token string">' '</span><span class="token punctuation">)</span>
+
+<span class="token keyword">def</span> <span class="token function">know</span><span class="token punctuation">(</span>index<span class="token punctuation">,</span> pos<span class="token punctuation">,</span> ch<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    msg<span class="token punctuation">[</span>index<span class="token punctuation">,</span> pos<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token builtin">ord</span><span class="token punctuation">(</span>ch<span class="token punctuation">)</span>
+    <span class="token keyword">for</span> x <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token builtin">len</span><span class="token punctuation">(</span>c<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">if</span> x <span class="token operator">!=</span> index<span class="token punctuation">:</span>
+            msg<span class="token punctuation">[</span>x<span class="token punctuation">]</span><span class="token punctuation">[</span>pos<span class="token punctuation">]</span> <span class="token operator">=</span> xo<span class="token punctuation">.</span>strxor<span class="token punctuation">(</span>c<span class="token punctuation">[</span>x<span class="token punctuation">]</span><span class="token punctuation">,</span> c<span class="token punctuation">[</span>index<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">[</span>pos<span class="token punctuation">]</span> <span class="token operator">^</span> <span class="token builtin">ord</span><span class="token punctuation">(</span>ch<span class="token punctuation">)</span>
+
+
+dat <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+
+<span class="token keyword">def</span> <span class="token function">getSpace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">for</span> index<span class="token punctuation">,</span> x <span class="token keyword">in</span> <span class="token builtin">enumerate</span><span class="token punctuation">(</span>c<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        res <span class="token operator">=</span> <span class="token punctuation">[</span>xo<span class="token punctuation">.</span>strxor<span class="token punctuation">(</span>x<span class="token punctuation">,</span> y<span class="token punctuation">)</span> <span class="token keyword">for</span> y <span class="token keyword">in</span> c <span class="token keyword">if</span> x<span class="token operator">!=</span>y<span class="token punctuation">]</span>
+        f <span class="token operator">=</span> <span class="token keyword">lambda</span> pos<span class="token punctuation">:</span> <span class="token builtin">len</span><span class="token punctuation">(</span><span class="token builtin">list</span><span class="token punctuation">(</span><span class="token builtin">filter</span><span class="token punctuation">(</span>isChr<span class="token punctuation">,</span> <span class="token punctuation">[</span>s<span class="token punctuation">[</span>pos<span class="token punctuation">]</span> <span class="token keyword">for</span> s <span class="token keyword">in</span> res<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+        cnt <span class="token operator">=</span> <span class="token punctuation">[</span>f<span class="token punctuation">(</span>pos<span class="token punctuation">)</span> <span class="token keyword">for</span> pos <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token builtin">len</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+        <span class="token keyword">for</span> pos <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token builtin">len</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+            dat<span class="token punctuation">.</span>append<span class="token punctuation">(</span><span class="token punctuation">(</span>f<span class="token punctuation">(</span>pos<span class="token punctuation">)</span><span class="token punctuation">,</span> index<span class="token punctuation">,</span> pos<span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+c <span class="token operator">=</span> <span class="token punctuation">[</span>codecs<span class="token punctuation">.</span>decode<span class="token punctuation">(</span>x<span class="token punctuation">.</span>strip<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>encode<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token string">'hex'</span><span class="token punctuation">)</span> <span class="token keyword">for</span> x <span class="token keyword">in</span> <span class="token builtin">open</span><span class="token punctuation">(</span><span class="token string">'Problem.txt'</span><span class="token punctuation">,</span> <span class="token string">'r'</span><span class="token punctuation">)</span><span class="token punctuation">.</span>readlines<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+
+msg <span class="token operator">=</span> np<span class="token punctuation">.</span>zeros<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token builtin">len</span><span class="token punctuation">(</span>c<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token builtin">len</span><span class="token punctuation">(</span>c<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">,</span> dtype<span class="token operator">=</span><span class="token builtin">int</span><span class="token punctuation">)</span>
+
+getSpace<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+dat <span class="token operator">=</span> <span class="token builtin">sorted</span><span class="token punctuation">(</span>dat<span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span>
+<span class="token keyword">for</span> w<span class="token punctuation">,</span> index<span class="token punctuation">,</span> pos <span class="token keyword">in</span> dat<span class="token punctuation">:</span>
+    infer<span class="token punctuation">(</span>index<span class="token punctuation">,</span> pos<span class="token punctuation">)</span>
+
+know<span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">,</span> <span class="token number">21</span><span class="token punctuation">,</span> <span class="token string">'y'</span><span class="token punctuation">)</span>
+know<span class="token punctuation">(</span><span class="token number">8</span><span class="token punctuation">,</span> <span class="token number">14</span><span class="token punctuation">,</span> <span class="token string">'n'</span><span class="token punctuation">)</span>
+
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'\n'</span><span class="token punctuation">.</span>join<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">''</span><span class="token punctuation">.</span>join<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token builtin">chr</span><span class="token punctuation">(</span>c<span class="token punctuation">)</span> <span class="token keyword">for</span> c <span class="token keyword">in</span> x<span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token keyword">for</span> x <span class="token keyword">in</span> msg<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+key <span class="token operator">=</span> xo<span class="token punctuation">.</span>strxor<span class="token punctuation">(</span>c<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token string">''</span><span class="token punctuation">.</span>join<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token builtin">chr</span><span class="token punctuation">(</span>c<span class="token punctuation">)</span> <span class="token keyword">for</span> c <span class="token keyword">in</span> msg<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">.</span>encode<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>key<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment">#脚本2</span>
+<span class="token comment">#!/usr/bin/python</span>
+<span class="token comment">## OTP - Recovering the private key from a set of messages that were encrypted w/ the same private key (Many time pad attack) - crypto100-many_time_secret @ alexctf 2017</span>
+<span class="token comment"># Original code by jwomers: https://github.com/Jwomers/many-time-pad-attack/blob/master/attack.py)</span>
+
+<span class="token keyword">import</span> string
+<span class="token keyword">import</span> collections
+<span class="token keyword">import</span> sets<span class="token punctuation">,</span> sys
+
+<span class="token comment"># 11 unknown ciphertexts (in hex format), all encrpyted with the same key</span>
+c1<span class="token operator">=</span><span class="token string">'daaa4b4e8c996dc786889cd63bc4df4d1e7dc6f3f0b7a0b61ad48811f6f7c9bfabd7083c53ba54'</span>
+c2<span class="token operator">=</span><span class="token string">'c5a342468c8c7a88999a9dd623c0cc4b0f7c829acaf8f3ac13c78300b3b1c7a3ef8e193840bb'</span>
+c3<span class="token operator">=</span><span class="token string">'dda342458c897a8285df879e3285ce511e7c8d9afff9b7ff15de8a16b394c7bdab920e7946a05e9941d8308e'</span>
+c4<span class="token operator">=</span><span class="token string">'d9b05b4cd5ce7c8f938bd39e24d0df191d7694dfeaf8bfbb56e28900e1b8dff1bb985c2d5aa154'</span>
+c5<span class="token operator">=</span><span class="token string">'d9aa4b00c88b7fc79d99d38223c08d54146b88d3f0f0f38c03df8d52f0bfc1bda3d7133712a55e9948c32c8a'</span>
+c6<span class="token operator">=</span><span class="token string">'c4b60e46c9827cc79e9698936bd1c55c5b6e87c8f0febdb856fe8052e4bfc9a5efbe5c3f57ad4b9944de34'</span>
+c7<span class="token operator">=</span><span class="token string">'d9aa5700da817f94d29e81936bc4c1555b7b94d5f5f2bdff37df8252ffbecfb9bbd7152a12bc4fc00ad7229090'</span>
+c8<span class="token operator">=</span><span class="token string">'c4e24645cd9c28939a86d3982ac8c819086989d1fbf9f39e18d5c601fbb6dab4ef9e12795bbc549959d9229090'</span>
+c9<span class="token operator">=</span><span class="token string">'d9aa4b598c80698a97df879e2ec08d5b1e7f89c8fbb7beba56f0c619fdb2c4bdef8313795fa149dc0ad4228f'</span>
+c10<span class="token operator">=</span><span class="token string">'cce25d48d98a6c8280df909926c0de19143983c8befab6ff21d99f52e4b2daa5ef83143647e854d60ad5269c87'</span>
+c11<span class="token operator">=</span><span class="token string">'d9aa4b598c85668885df9d993f85e419107783cdbee3bbba1391b11afcf7c3bfaa805c2d5aad42995ede2cdd82977244'</span>
+ciphers <span class="token operator">=</span> <span class="token punctuation">[</span>c1<span class="token punctuation">,</span> c2<span class="token punctuation">,</span> c3<span class="token punctuation">,</span> c4<span class="token punctuation">,</span> c5<span class="token punctuation">,</span> c6<span class="token punctuation">,</span> c7<span class="token punctuation">,</span> c8<span class="token punctuation">,</span> c9<span class="token punctuation">,</span> c10<span class="token punctuation">,</span> c11<span class="token punctuation">]</span>
+<span class="token comment"># The target ciphertext we want to crack</span>
+
+<span class="token comment"># XORs two string</span>
+<span class="token keyword">def</span> <span class="token function">strxor</span><span class="token punctuation">(</span>a<span class="token punctuation">,</span> b<span class="token punctuation">)</span><span class="token punctuation">:</span>     <span class="token comment"># xor two strings (trims the longer input)</span>
+    <span class="token keyword">return</span> <span class="token string">""</span><span class="token punctuation">.</span>join<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token builtin">chr</span><span class="token punctuation">(</span><span class="token builtin">ord</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span> <span class="token operator">^</span> <span class="token builtin">ord</span><span class="token punctuation">(</span>y<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token keyword">for</span> <span class="token punctuation">(</span>x<span class="token punctuation">,</span> y<span class="token punctuation">)</span> <span class="token keyword">in</span> <span class="token builtin">zip</span><span class="token punctuation">(</span>a<span class="token punctuation">,</span> b<span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+
+<span class="token keyword">def</span> <span class="token function">target_fix</span><span class="token punctuation">(</span>target_cipher<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">print</span> <span class="token string">'-------begin-------'</span>
+
+    <span class="token comment"># To store the final key</span>
+    final_key <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token boolean">None</span><span class="token punctuation">]</span><span class="token operator">*</span><span class="token number">150</span>
+    <span class="token comment"># To store the positions we know are broken</span>
+    known_key_positions <span class="token operator">=</span> <span class="token builtin">set</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+    <span class="token comment"># For each ciphertext</span>
+    <span class="token keyword">for</span> current_index<span class="token punctuation">,</span> ciphertext <span class="token keyword">in</span> <span class="token builtin">enumerate</span><span class="token punctuation">(</span>ciphers<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        counter <span class="token operator">=</span> collections<span class="token punctuation">.</span>Counter<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token comment"># for each other ciphertext</span>
+        <span class="token keyword">for</span> index<span class="token punctuation">,</span> ciphertext2 <span class="token keyword">in</span> <span class="token builtin">enumerate</span><span class="token punctuation">(</span>ciphers<span class="token punctuation">)</span><span class="token punctuation">:</span>
+            <span class="token keyword">if</span> current_index <span class="token operator">!=</span> index<span class="token punctuation">:</span> <span class="token comment"># don't xor a ciphertext with itself</span>
+                <span class="token keyword">for</span> indexOfChar<span class="token punctuation">,</span> char <span class="token keyword">in</span> <span class="token builtin">enumerate</span><span class="token punctuation">(</span>strxor<span class="token punctuation">(</span>ciphertext<span class="token punctuation">.</span>decode<span class="token punctuation">(</span><span class="token string">'hex'</span><span class="token punctuation">)</span><span class="token punctuation">,</span> ciphertext2<span class="token punctuation">.</span>decode<span class="token punctuation">(</span><span class="token string">'hex'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">:</span> <span class="token comment"># Xor the two ciphertexts</span>
+                    <span class="token comment"># If a character in the xored result is a alphanumeric character, it means there was probably a space character in one of the plaintexts (we don't know which one)</span>
+                    <span class="token keyword">if</span> char <span class="token keyword">in</span> string<span class="token punctuation">.</span>printable <span class="token keyword">and</span> char<span class="token punctuation">.</span>isalpha<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span> counter<span class="token punctuation">[</span>indexOfChar<span class="token punctuation">]</span> <span class="token operator">+=</span> <span class="token number">1</span> <span class="token comment"># Increment the counter at this index</span>
+        knownSpaceIndexes <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+
+        <span class="token comment"># Loop through all positions where a space character was possible in the current_index cipher</span>
+        <span class="token keyword">for</span> ind<span class="token punctuation">,</span> val <span class="token keyword">in</span> counter<span class="token punctuation">.</span>items<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+            <span class="token comment"># If a space was found at least 7 times at this index out of the 9 possible XORS, then the space character was likely from the current_index cipher!</span>
+            <span class="token keyword">if</span> val <span class="token operator">>=</span> <span class="token number">7</span><span class="token punctuation">:</span> knownSpaceIndexes<span class="token punctuation">.</span>append<span class="token punctuation">(</span>ind<span class="token punctuation">)</span>
+        <span class="token comment">#print knownSpaceIndexes # Shows all the positions where we now know the key!</span>
+
+        <span class="token comment"># Now Xor the current_index with spaces, and at the knownSpaceIndexes positions we get the key back!</span>
+        xor_with_spaces <span class="token operator">=</span> strxor<span class="token punctuation">(</span>ciphertext<span class="token punctuation">.</span>decode<span class="token punctuation">(</span><span class="token string">'hex'</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token string">' '</span><span class="token operator">*</span><span class="token number">150</span><span class="token punctuation">)</span>
+        <span class="token keyword">for</span> index <span class="token keyword">in</span> knownSpaceIndexes<span class="token punctuation">:</span>
+            <span class="token comment"># Store the key's value at the correct position</span>
+            final_key<span class="token punctuation">[</span>index<span class="token punctuation">]</span> <span class="token operator">=</span> xor_with_spaces<span class="token punctuation">[</span>index<span class="token punctuation">]</span><span class="token punctuation">.</span>encode<span class="token punctuation">(</span><span class="token string">'hex'</span><span class="token punctuation">)</span>
+            <span class="token comment"># Record that we known the key at this position</span>
+            known_key_positions<span class="token punctuation">.</span>add<span class="token punctuation">(</span>index<span class="token punctuation">)</span>
+
+    <span class="token comment"># Construct a hex key from the currently known key, adding in '00' hex chars where we do not know (to make a complete hex string)</span>
+    final_key_hex <span class="token operator">=</span> <span class="token string">''</span><span class="token punctuation">.</span>join<span class="token punctuation">(</span><span class="token punctuation">[</span>val <span class="token keyword">if</span> val <span class="token keyword">is</span> <span class="token keyword">not</span> <span class="token boolean">None</span> <span class="token keyword">else</span> <span class="token string">'00'</span> <span class="token keyword">for</span> val <span class="token keyword">in</span> final_key<span class="token punctuation">]</span><span class="token punctuation">)</span>
+    <span class="token comment"># Xor the currently known key with the target cipher</span>
+    output <span class="token operator">=</span> strxor<span class="token punctuation">(</span>target_cipher<span class="token punctuation">.</span>decode<span class="token punctuation">(</span><span class="token string">'hex'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>final_key_hex<span class="token punctuation">.</span>decode<span class="token punctuation">(</span><span class="token string">'hex'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+    <span class="token keyword">print</span> <span class="token string">"Fix this sentence:"</span>
+    <span class="token keyword">print</span> <span class="token string">''</span><span class="token punctuation">.</span>join<span class="token punctuation">(</span><span class="token punctuation">[</span>char <span class="token keyword">if</span> index <span class="token keyword">in</span> known_key_positions <span class="token keyword">else</span> <span class="token string">'*'</span> <span class="token keyword">for</span> index<span class="token punctuation">,</span> char <span class="token keyword">in</span> <span class="token builtin">enumerate</span><span class="token punctuation">(</span>output<span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token operator">+</span><span class="token string">"\n"</span>
+
+    <span class="token comment"># WAIT.. MANUAL STEP HERE </span>
+    <span class="token comment"># This output are printing a * if that character is not known yet</span>
+    <span class="token comment"># fix the missing characters like this: "Let*M**k*ow if *o&#123;*a" = "cure, Let Me know if you a"</span>
+    <span class="token comment"># if is too hard, change the target_cipher to another one and try again</span>
+    <span class="token comment"># and we have our key to fix the entire text!</span>
+
+    <span class="token comment">#sys.exit(0) #comment and continue if u got a good key</span>
+
+    <span class="token keyword">print</span> <span class="token string">'------end------'</span>
+    
+<span class="token keyword">for</span> i <span class="token keyword">in</span> ciphers<span class="token punctuation">:</span>
+    target_fix<span class="token punctuation">(</span>i<span class="token punctuation">)</span>
+
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="伪随机密钥流">伪随机密钥流</h2>
+<h3 id="伪随机序列"><strong>伪随机序列</strong></h3>
+<p>伪随机序列也就是，即使截获其中一段,也无法推测后面是什么。（只能要求截获比周期短的一段密钥流时不会泄露更多信息, 这样的序列称为伪随机序列。）</p>
+<h3 id="伪随机数生成器">伪随机数生成器</h3>
+<h4 id="线性同余生成器-线性同余方法-lcg">线性同余生成器 / 线性同余方法（LCG）</h4>
+<p>线性同余方法（LCG）是个产生伪随机数的方法</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/post/fb8b77a1/%E7%BA%BF%E6%80%A7%E5%90%8C%E4%BD%99%E6%B3%95.png" alt="《图解密码技术》笔记（二） | yucs's Blog"></p>
+<p>LCG的性能和随机性取决于选取的参数。如果选择恰当的参数，LCG可以生成长周期和均匀分布的伪随机数序列。然而，不恰当的参数选择可能导致序列的周期较短或者存在可预测的模式，从而影响其随机性和安全性</p>
+<p>LCG的周期最大为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi></mrow><annotation encoding="application/x-tex">M</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.10903em;">M</span></span></span></span>，但大部分情况都会少于 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi></mrow><annotation encoding="application/x-tex">M</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.10903em;">M</span></span></span></span>。要令LCG达到最大周期，应符合以下条件：</p>
+<ol>
+<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mo separator="true">,</mo><mi>M</mi></mrow><annotation encoding="application/x-tex">B,M</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8777699999999999em;vertical-align:-0.19444em;"></span><span class="mord mathdefault" style="margin-right:0.05017em;">B</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault" style="margin-right:0.10903em;">M</span></span></span></span> 互质；</li>
+<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi></mrow><annotation encoding="application/x-tex">M</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.10903em;">M</span></span></span></span> 的所有质因数都能整除 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">A-1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.76666em;vertical-align:-0.08333em;"></span><span class="mord mathdefault">A</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">1</span></span></span></span>；</li>
+<li>若 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi></mrow><annotation encoding="application/x-tex">M</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.10903em;">M</span></span></span></span> 是4的倍数，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">A-1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.76666em;vertical-align:-0.08333em;"></span><span class="mord mathdefault">A</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">1</span></span></span></span> 也是；</li>
+<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo separator="true">,</mo><mi>B</mi><mo separator="true">,</mo><msub><mi>N</mi><mn>0</mn></msub></mrow><annotation encoding="application/x-tex">A,B,N_{0}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8777699999999999em;vertical-align:-0.19444em;"></span><span class="mord mathdefault">A</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault" style="margin-right:0.05017em;">B</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.10903em;">N</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.10903em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">0</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 都比 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi></mrow><annotation encoding="application/x-tex">M</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.10903em;">M</span></span></span></span> 小；</li>
+<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo separator="true">,</mo><mi>B</mi></mrow><annotation encoding="application/x-tex">A,B</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8777699999999999em;vertical-align:-0.19444em;"></span><span class="mord mathdefault">A</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault" style="margin-right:0.05017em;">B</span></span></span></span> 是正整数。</li>
+</ol>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> functools <span class="token keyword">import</span> <span class="token builtin">reduce</span>
+<span class="token keyword">from</span> math <span class="token keyword">import</span> gcd
+<span class="token keyword">from</span> Crypto<span class="token punctuation">.</span>Util<span class="token punctuation">.</span>number <span class="token keyword">import</span> <span class="token operator">*</span>
+
+<span class="token keyword">def</span> <span class="token function">egcd</span><span class="token punctuation">(</span>a<span class="token punctuation">,</span> b<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">if</span> a <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> <span class="token punctuation">(</span>b<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span>
+    <span class="token keyword">else</span><span class="token punctuation">:</span>
+        g<span class="token punctuation">,</span> y<span class="token punctuation">,</span> x <span class="token operator">=</span> egcd<span class="token punctuation">(</span>b <span class="token operator">%</span> a<span class="token punctuation">,</span> a<span class="token punctuation">)</span>
+        <span class="token keyword">return</span> <span class="token punctuation">(</span>g<span class="token punctuation">,</span> x <span class="token operator">-</span> <span class="token punctuation">(</span>b <span class="token operator">//</span> a<span class="token punctuation">)</span> <span class="token operator">*</span> y<span class="token punctuation">,</span> y<span class="token punctuation">)</span>
+
+<span class="token keyword">def</span> <span class="token function">modinv</span><span class="token punctuation">(</span>a<span class="token punctuation">,</span> m<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    g<span class="token punctuation">,</span> x<span class="token punctuation">,</span> y <span class="token operator">=</span> egcd<span class="token punctuation">(</span>a<span class="token punctuation">,</span> m<span class="token punctuation">)</span>
+    <span class="token keyword">if</span> g <span class="token operator">!=</span> <span class="token number">1</span><span class="token punctuation">:</span>
+        <span class="token keyword">raise</span> Exception<span class="token punctuation">(</span><span class="token string">'modular inverse does not exist'</span><span class="token punctuation">)</span>
+    <span class="token keyword">else</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> x <span class="token operator">%</span> m
+
+<span class="token keyword">def</span> <span class="token function">crack_unknown_increment</span><span class="token punctuation">(</span>states<span class="token punctuation">,</span> modulus<span class="token punctuation">,</span> multiplier<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    increment <span class="token operator">=</span> <span class="token punctuation">(</span>states<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">-</span> states<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token operator">*</span>multiplier<span class="token punctuation">)</span> <span class="token operator">%</span> modulus
+    <span class="token keyword">return</span> modulus<span class="token punctuation">,</span> multiplier<span class="token punctuation">,</span> increment
+
+<span class="token keyword">def</span> <span class="token function">crack_unknown_multiplier</span><span class="token punctuation">(</span>states<span class="token punctuation">,</span> modulus<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    multiplier <span class="token operator">=</span> <span class="token punctuation">(</span>states<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span> <span class="token operator">-</span> states<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">*</span> modinv<span class="token punctuation">(</span>states<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">-</span> states<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">,</span> modulus<span class="token punctuation">)</span> <span class="token operator">%</span> modulus
+    <span class="token keyword">return</span> crack_unknown_increment<span class="token punctuation">(</span>states<span class="token punctuation">,</span> modulus<span class="token punctuation">,</span> multiplier<span class="token punctuation">)</span>
+
+<span class="token keyword">def</span> <span class="token function">crack_unknown_modulus</span><span class="token punctuation">(</span>states<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    diffs <span class="token operator">=</span> <span class="token punctuation">[</span>s1 <span class="token operator">-</span> s0 <span class="token keyword">for</span> s0<span class="token punctuation">,</span> s1 <span class="token keyword">in</span> <span class="token builtin">zip</span><span class="token punctuation">(</span>states<span class="token punctuation">,</span> states<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">:</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+    zeroes <span class="token operator">=</span> <span class="token punctuation">[</span>t2<span class="token operator">*</span>t0 <span class="token operator">-</span> t1<span class="token operator">*</span>t1 <span class="token keyword">for</span> t0<span class="token punctuation">,</span> t1<span class="token punctuation">,</span> t2 <span class="token keyword">in</span> <span class="token builtin">zip</span><span class="token punctuation">(</span>diffs<span class="token punctuation">,</span> diffs<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">:</span><span class="token punctuation">]</span><span class="token punctuation">,</span> diffs<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">:</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+    modulus <span class="token operator">=</span> <span class="token builtin">abs</span><span class="token punctuation">(</span><span class="token builtin">reduce</span><span class="token punctuation">(</span>gcd<span class="token punctuation">,</span> zeroes<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token keyword">return</span> crack_unknown_multiplier<span class="token punctuation">(</span>states<span class="token punctuation">,</span> modulus<span class="token punctuation">)</span>
+
+<span class="token comment"># N[i+1] = (A*N[i]+B) % M</span>
+<span class="token comment"># A,B,N均未知</span>
+sequence <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+modulus<span class="token punctuation">,</span> multiplier<span class="token punctuation">,</span> increment <span class="token operator">=</span> crack_unknown_modulus<span class="token punctuation">(</span>sequence<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'A = '</span><span class="token operator">+</span><span class="token builtin">str</span><span class="token punctuation">(</span>multiplier<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'B = '</span><span class="token operator">+</span><span class="token builtin">str</span><span class="token punctuation">(</span>increment<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'N = '</span><span class="token operator">+</span><span class="token builtin">str</span><span class="token punctuation">(</span>modulus<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="线性反馈移位寄存器-linear-feedback-shift-register-简称lfsr">线性反馈移位寄存器（Linear Feedback Shift Register，简称LFSR）</h4>
+<p>用于生成一个伪随机的比特序列，常用于加密、编码、通信等领域。</p>
+<p>移位寄存器是流密码产生密钥流的一个主要组成部分，GF（2）上一个n级反馈移位寄存器由n个二元存储器与一个反馈函数组成。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/post/fb8b77a1/FSR.png" alt="img"></p>
+<p>移位寄存器三要素：</p>
+<ol>
+<li>初始状态：由用户确定</li>
+<li>反馈函数：<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo stretchy="false">(</mo><msub><mi>a</mi><mn>1</mn></msub><mo separator="true">,</mo><msub><mi>a</mi><mn>2</mn></msub><mo separator="true">,</mo><mo>⋯</mo><mtext> </mtext><mo separator="true">,</mo><msub><mi>a</mi><mi>n</mi></msub><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">f(a_1,a_2,\cdots,a_n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.10764em;">f</span><span class="mopen">(</span><span class="mord"><span class="mord mathdefault">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathdefault">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="minner">⋯</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathdefault">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span> 是 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault">n</span></span></span></span> 元布尔函数，即函数的自变量和因变量只取0和1这两个可能值（题目给出）</li>
+<li>输出序列</li>
+</ol>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/post/fb8b77a1/image-20230715153526370.png" alt="image-20230715153526370"></p>
+<p>对于 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault">n</span></span></span></span> 级线性反馈移位寄存器</p>
+<ul>
+<li><strong>最长周期</strong>为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>2</mn><mi>n</mi></msup><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">2^n-1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.747722em;vertical-align:-0.08333em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.664392em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">n</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">1</span></span></span></span>（排除全0），达到最长周期的序列一般称为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi></mrow><annotation encoding="application/x-tex">m</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault">m</span></span></span></span> 序列。</li>
+<li>完全由其反馈函数决定。</li>
+<li>n级LFSR状态数：最多有2^n个</li>
+<li>输出序列的周期 = 状态周期 &lt;= 2^n - 1</li>
+</ul>
+<h3 id="mt19937-梅森旋转算法-mersenne-twister-algorithm-简称-mt">MT19937（<strong>梅森旋转算法</strong>（<strong>Mersenne Twister</strong> Algorithm，简称 MT））</h3>
+<p>​		为了解决过去伪随机数发生器（Pseudo-Random Number Generator，简称 PRNG）产生的伪随机数质量不高而提出的新算法。常见的两种为基于32位的 MT19937和基于64位的 MT19937-64。</p>
+<p>由于梅森旋转算法是利用**线性反馈移位寄存器（LFSR）**产生随机数的，对于LFRS有结论：一个 k 位的移位寄存器，选取合适的特征多项式（即加1为本原多项式）时，取得最大周期 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>2</mn><mi>k</mi></msup><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">2^k-1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.932438em;vertical-align:-0.08333em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.849108em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.03148em;">k</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">1</span></span></span></span>.</p>
+<p>而MT19937梅森旋转算法的周期为$ 2^{19937}−1$ （正如算法名，这是一个梅森素数），说明它是一个19937级的线性反馈移位寄存器，梅森旋转算法是利用线性反馈寄存器一直进行移位旋转，因此实际上 MT19937-32只需要用32位就能做到。它能做到在 $1≤k≤623 $都可以均匀分布。</p>
+<p>Mersenne Twister 最常见的实现方式使用 624 个 32 bits 的初始状态。这些整数按顺序分发（分发前对每个初始数进行转换），分发完后对该状态应用某种算法以获取下一组 624 个整数。以及可以通过得到连续的 624 个输出，还原出原来的 624 个 states，再根据原算法推算出接下来每个 state 下一次的 value，从而算出接下来的输出</p>
+<h4 id="算法">算法</h4>
+<p>整个算法主要分为三个阶段：</p>
+<ul>
+<li>
+<p>第一阶段：获得基础的梅森旋转链；</p>
+</li>
+<li>
+<p>第二阶段：对于旋转链进行旋转算法；</p>
+</li>
+<li>
+<p>第三阶段：对于旋转算法所得的结果进行处理；</p>
+</li>
+</ul>
+<h5 id="第一阶段">第一阶段</h5>
+<p>导入seed，初始化伪随机数发生器</p>
+<p>使用一个循环从索引1到623的范围，为 <code>mt</code> 列表的其他元素赋值。赋值的方式基于 Mersenne Twister 算法的核心公式。</p>
+<ul>
+<li><code>_int32()</code> 是一个辅助函数，用于确保结果是32位有符号整数。</li>
+<li><code>(self.mt[i - 1] ^ self.mt[i - 1] &gt;&gt; 30)</code> 表示对 <code>mt</code> 列表中前一个元素进行右移30位的操作，然后与前一个元素进行异或运算。</li>
+<li><code>1812433253</code> 是一个常数。</li>
+<li><code>+ i</code> 表示将索引值加到结果中，以产生不同的种子序列。</li>
+</ul>
+<h5 id="第二阶段">第二阶段</h5>
+<p>进行 <code>twist()</code> 函数</p>
+<p>==<code>twist()</code> 方法==用于对生成器的状态进行旋转操作。它的操作步骤如下：</p>
+<ol>
+<li>使用一个循环从索引0到623的范围，依次处理每个状态元素。</li>
+<li>根据状态元素的索引，获取当前元素和下一个元素的值。</li>
+<li>对获取的值进行位操作，包括按位与和按位异或，以改变当前元素的值。（</li>
+<li><code>(self.mt[i] &amp; 0x80000000)</code> 获取当前元素的最高位，<code>(self.mt[(i + 1) % 624] &amp; 0x7fffffff)</code> 获取下一个元素的其余31位。这样可以将当前元素的最高位和下一个元素的其余31位合并成一个32位的值。将获取的值存储到变量 <code>y</code> 中，并使用 <code>_int32()</code> 函数将其转换为32位有符号整数。对当前元素进行状态扭曲操作。首先，使用右移运算符将 <code>y</code> 的值向右移动1位，然后与索引为 <code>(i + 397) % 624</code> 的状态元素进行按位异或运算。如果 <code>y</code> 的值除以2的余数不为0，即 <code>y % 2 != 0</code>，则将当前元素与常数 <code>0x9908b0df</code> 进行按位异或运算。）</li>
+<li>将结果存储回 <code>mt</code> 列表的当前元素位置。</li>
+</ol>
+<h5 id="第三阶段">第三阶段</h5>
+<p>==<code>extract_number()</code> 方法==用于从生成器中提取一个伪随机数。它的操作步骤如下：</p>
+<ol>
+<li>首先，检查 <code>mti</code><em>（mti 是用于追踪 mt 列表中当前使用的元素的索引)</em> 是否等于0，如果等于0，则调用 <code>twist()</code> 方法进行状态的扭曲操作，以生成新的伪随机数序列。</li>
+<li>接下来，从 <code>mt</code> 列表中获取当前的随机数，存储到变量 <code>y</code> 中。</li>
+<li>对 <code>y</code> 执行一系列的位运算操作，包括右移、异或、左移和按位与，以改变 <code>y</code> 的值。</li>
+<li>更新 <code>mti</code> 的值，将其加1并对624取模，以确保它在0到623之间循环。</li>
+<li>返回 <code>_int32(y)</code>，其中 <code>_int32()</code> 是一个辅助函数，用于确保结果是32位有符号整数。</li>
+</ol>
+<p>实现</p>
+<p>使用MT19937算法生成范围在 [232−1]<br>
+的均匀分布的32位整数。</p>
+<pre class="line-numbers language-none"><code class="language-none">def _int32(x):
+    return int(0xFFFFFFFF &amp; x)
+  
+class MT19937:
+    # 用于初始化伪随机数生成器的类的构造函数
+    # 根据seed初始化624的state
+    def __init__(self, seed):
+   #创建一个名为 mt 的列表，包含624个元素，初始值都为0。这是用于存储生成器状态的主要数据结构。
+        self.mt &#x3D; [0] * 624
+   #将输入参数 seed 的值赋给 mt 列表的第一个元素。它用于初始化生成器的种子。
+        self.mt[0] &#x3D; seed
+   #mti 是用于追踪 mt 列表中当前使用的元素的索引。
+        self.mti &#x3D; 0
+        for i in range(1, 624):
+            self.mt[i] &#x3D; _int32(1812433253 * (self.mt[i - 1] ^ self.mt[i - 1] &gt;&gt; 30) + i)
+  
+    # 提取伪随机数
+    def extract_number(self):
+        if self.mti &#x3D;&#x3D; 0:
+            self.twist()
+        y &#x3D; self.mt[self.mti]
+        y &#x3D; y ^ y &gt;&gt; 11
+        y &#x3D; y ^ y &lt;&lt; 7 &amp; 2636928640
+        y &#x3D; y ^ y &lt;&lt; 15 &amp; 4022730752
+        y &#x3D; y ^ y &gt;&gt; 18
+        self.mti &#x3D; (self.mti + 1) % 624
+        return _int32(y)
+  
+    # 对状态进行旋转
+    def twist(self):
+        for i in range(0, 624):
+            y &#x3D; _int32((self.mt[i] &amp; 0x80000000) + (self.mt[(i + 1) % 624] &amp; 0x7fffffff))
+            self.mt[i] &#x3D; (y &gt;&gt; 1) ^ self.mt[(i + 397) % 624]
+            if y % 2 !&#x3D; 0:
+                self.mt[i] &#x3D; self.mt[i] ^ 0x9908b0df
+
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="破解">破解</h4>
+<p><a target="_blank" rel="noopener" href="https://hasegawaazusa.github.io/mersenne-twister-note.html#mt19937-%E5%88%9D%E5%A7%8B%E5%8C%96">Mersenne Twister 梅森旋转算法笔记 | 独奏の小屋 (hasegawaazusa.github.io)</a></p>
+<h5 id="右移位后异或逆向">右移位后异或逆向</h5>
+<pre class="line-numbers language-none"><code class="language-none">def unshiftRight(self, x, shift):
+    res &#x3D; x
+    for i in range(32):
+        res &#x3D; x ^ res &gt;&gt; shift
+    return res<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h5 id="左移位后异或逆向">左移位后异或逆向</h5>
+<pre class="line-numbers language-none"><code class="language-none">def unshiftLeft(self, x, shift, mask):
+    res &#x3D; x
+    for i in range(32):
+        res &#x3D; x ^ (res &lt;&lt; shift &amp; mask)
+    return res<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h5 id="提取伪随机数逆向">提取伪随机数逆向</h5>
+<pre class="line-numbers language-none"><code class="language-none">b &#x3D; 0x9d2c5680
+c &#x3D; 0xefc60000
+def untemper(self, v):
+    v &#x3D; self.unshiftRight(v, 18)
+    v &#x3D; self.unshiftLeft(v, 15, self.c)
+    v &#x3D; self.unshiftLeft(v, 7, self.b)
+    v &#x3D; self.unshiftRight(v, 11)
+    return v<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h5 id="通过输出参数逆向">通过输出参数逆向</h5>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># forward 表示是否需要回到目前状态</span>
+<span class="token keyword">def</span> <span class="token function">go</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> outputs<span class="token punctuation">,</span> forward<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token comment"># 还原的寄存器状态</span>
+    result_state <span class="token operator">=</span> <span class="token boolean">None</span>
+
+    <span class="token comment"># 至少需要 624 个寄存器状态</span>
+    <span class="token keyword">assert</span> <span class="token builtin">len</span><span class="token punctuation">(</span>outputs<span class="token punctuation">)</span> <span class="token operator">>=</span> <span class="token number">624</span>
+
+    ivals <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+    <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">624</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        ivals<span class="token punctuation">.</span>append<span class="token punctuation">(</span>self<span class="token punctuation">.</span>untemper<span class="token punctuation">(</span>outputs<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+    <span class="token keyword">if</span> <span class="token builtin">len</span><span class="token punctuation">(</span>outputs<span class="token punctuation">)</span> <span class="token operator">>=</span> <span class="token number">625</span><span class="token punctuation">:</span>
+        <span class="token comment"># 此时可以使用后面的数据进行验证</span>
+        challenge <span class="token operator">=</span> outputs<span class="token punctuation">[</span><span class="token number">624</span><span class="token punctuation">]</span>
+        <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">626</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+            state <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">,</span> <span class="token builtin">tuple</span><span class="token punctuation">(</span>ivals<span class="token operator">+</span><span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token boolean">None</span><span class="token punctuation">)</span>
+            r <span class="token operator">=</span> random<span class="token punctuation">.</span>Random<span class="token punctuation">(</span><span class="token punctuation">)</span>
+            r<span class="token punctuation">.</span>setstate<span class="token punctuation">(</span>state<span class="token punctuation">)</span>
+
+            <span class="token keyword">if</span> challenge <span class="token operator">==</span> r<span class="token punctuation">.</span>getrandbits<span class="token punctuation">(</span><span class="token number">32</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+                result_state <span class="token operator">=</span> state
+                <span class="token keyword">break</span>
+    <span class="token keyword">else</span><span class="token punctuation">:</span>
+        <span class="token comment"># 如果刚好是 624 个寄存器状态</span>
+        result_state <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">,</span> <span class="token builtin">tuple</span><span class="token punctuation">(</span>ivals<span class="token operator">+</span><span class="token punctuation">[</span><span class="token number">624</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token boolean">None</span><span class="token punctuation">)</span>
+
+    <span class="token comment"># 利用 python 自带的 mt19937 random 库</span>
+    rand <span class="token operator">=</span> random<span class="token punctuation">.</span>Random<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    rand<span class="token punctuation">.</span>setstate<span class="token punctuation">(</span>result_state<span class="token punctuation">)</span>
+
+    <span class="token comment"># 如果需要到输出后的状态，则进行比较判断</span>
+    <span class="token keyword">if</span> forward<span class="token punctuation">:</span>
+        <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">624</span><span class="token punctuation">,</span> <span class="token builtin">len</span><span class="token punctuation">(</span>outputs<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+            <span class="token keyword">assert</span> rand<span class="token punctuation">.</span>getrandbits<span class="token punctuation">(</span><span class="token number">32</span><span class="token punctuation">)</span> <span class="token operator">==</span> outputs<span class="token punctuation">[</span>i<span class="token punctuation">]</span>
+
+    <span class="token keyword">return</span> rand<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h5 id="完整代码">完整代码</h5>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">MT19937Recover</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">unshiftRight</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> x<span class="token punctuation">,</span> shift<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        res <span class="token operator">=</span> x
+        <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">32</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+            res <span class="token operator">=</span> x <span class="token operator">^</span> res <span class="token operator">>></span> shift
+        <span class="token keyword">return</span> res
+
+    <span class="token keyword">def</span> <span class="token function">unshiftLeft</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> x<span class="token punctuation">,</span> shift<span class="token punctuation">,</span> mask<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        res <span class="token operator">=</span> x
+        <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">32</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+            res <span class="token operator">=</span> x <span class="token operator">^</span> <span class="token punctuation">(</span>res <span class="token operator">&lt;&lt;</span> shift <span class="token operator">&amp;</span> mask<span class="token punctuation">)</span>
+        <span class="token keyword">return</span> res
+
+    <span class="token keyword">def</span> <span class="token function">untemper</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> v<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        v <span class="token operator">=</span> self<span class="token punctuation">.</span>unshiftRight<span class="token punctuation">(</span>v<span class="token punctuation">,</span> <span class="token number">18</span><span class="token punctuation">)</span>
+        v <span class="token operator">=</span> self<span class="token punctuation">.</span>unshiftLeft<span class="token punctuation">(</span>v<span class="token punctuation">,</span> <span class="token number">15</span><span class="token punctuation">,</span> <span class="token number">0xefc60000</span><span class="token punctuation">)</span>
+        v <span class="token operator">=</span> self<span class="token punctuation">.</span>unshiftLeft<span class="token punctuation">(</span>v<span class="token punctuation">,</span> <span class="token number">7</span><span class="token punctuation">,</span> <span class="token number">0x9d2c5680</span><span class="token punctuation">)</span>
+        v <span class="token operator">=</span> self<span class="token punctuation">.</span>unshiftRight<span class="token punctuation">(</span>v<span class="token punctuation">,</span> <span class="token number">11</span><span class="token punctuation">)</span>
+        <span class="token keyword">return</span> v
+
+    <span class="token keyword">def</span> <span class="token function">go</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> outputs<span class="token punctuation">,</span> forward<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        result_state <span class="token operator">=</span> <span class="token boolean">None</span>
+
+        <span class="token keyword">assert</span> <span class="token builtin">len</span><span class="token punctuation">(</span>outputs<span class="token punctuation">)</span> <span class="token operator">>=</span> <span class="token number">624</span>
+
+        ivals <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+        <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">624</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+            ivals<span class="token punctuation">.</span>append<span class="token punctuation">(</span>self<span class="token punctuation">.</span>untemper<span class="token punctuation">(</span>outputs<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+        <span class="token keyword">if</span> <span class="token builtin">len</span><span class="token punctuation">(</span>outputs<span class="token punctuation">)</span> <span class="token operator">>=</span> <span class="token number">625</span><span class="token punctuation">:</span>
+            challenge <span class="token operator">=</span> outputs<span class="token punctuation">[</span><span class="token number">624</span><span class="token punctuation">]</span>
+            <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">626</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+                state <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">,</span> <span class="token builtin">tuple</span><span class="token punctuation">(</span>ivals<span class="token operator">+</span><span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token boolean">None</span><span class="token punctuation">)</span>
+                r <span class="token operator">=</span> random<span class="token punctuation">.</span>Random<span class="token punctuation">(</span><span class="token punctuation">)</span>
+                r<span class="token punctuation">.</span>setstate<span class="token punctuation">(</span>state<span class="token punctuation">)</span>
+
+                <span class="token keyword">if</span> challenge <span class="token operator">==</span> r<span class="token punctuation">.</span>getrandbits<span class="token punctuation">(</span><span class="token number">32</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+                    result_state <span class="token operator">=</span> state
+                    <span class="token keyword">break</span>
+        <span class="token keyword">else</span><span class="token punctuation">:</span>
+            result_state <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">,</span> <span class="token builtin">tuple</span><span class="token punctuation">(</span>ivals<span class="token operator">+</span><span class="token punctuation">[</span><span class="token number">624</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token boolean">None</span><span class="token punctuation">)</span>
+
+        rand <span class="token operator">=</span> random<span class="token punctuation">.</span>Random<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        rand<span class="token punctuation">.</span>setstate<span class="token punctuation">(</span>result_state<span class="token punctuation">)</span>
+
+        <span class="token keyword">if</span> forward<span class="token punctuation">:</span>
+            <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">624</span><span class="token punctuation">,</span> <span class="token builtin">len</span><span class="token punctuation">(</span>outputs<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+                <span class="token keyword">assert</span> rand<span class="token punctuation">.</span>getrandbits<span class="token punctuation">(</span><span class="token number">32</span><span class="token punctuation">)</span> <span class="token operator">==</span> outputs<span class="token punctuation">[</span>i<span class="token punctuation">]</span>
+
+        <span class="token keyword">return</span> rand
+
+mtc <span class="token operator">=</span> MT19937Recover<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1>流密码的分类</h1>
+<p>依据流密码密钥序列产生的方式，可以将流密码分为<strong>同步流密码</strong>和<strong>自同步流密码</strong>两类。</p>
+<p>同步流密码：如果密钥流产生的算法和产生的密钥序列都与明文或密文无关，我们称这类流密码为同步流密码。</p>
+<p>自同步流密码：密钥流产生的算法与明文相关，则所产生的密钥序列也与明文相关，称这类流密码为自同步流密码</p>
+<h2 id="同步流密码">同步流密码</h2>
+<p>同步流密码可以分为密钥流产生器和加密变换器两部分</p>
+<p>在同步流密码中，<strong>前面出现的加解密错误不会影响到后面的加解密</strong>，这是因为相邻两位明文的加密是相互独立，没有关系的。</p>
+<p>同步流密码在加密或解密时，需要使两者密钥流生成器的状态一致（这里的状态可以决定密钥流生成器产生的密钥），否则会导致加解密密钥不一致，使解密失败。当两者密钥流生成器的状态不一致时，必须借助外接手段来同步，<strong>同步流密码本身不具有自同步功能</strong>，<strong>FB、CTR模式就属于同步流密码</strong></p>
+<h2 id="自同步流密码">自同步流密码</h2>
+<p>密钥产生算法是密钥和以往密文序列的函数，则称这种流密码为自同步流密码。</p>
+<p>自同步流密码中，<strong>密钥序列的产生与明文的加密是不独立的</strong>，也是不能分割的。很多情况下，明文或者密文都需要给密钥序列的产生提供反馈。</p>
+<p><strong>自同步流密码具有自同步功能</strong>。因为密钥序列的产生与明密文序列有关，所以加密和解密密钥生成器的状态不一致时，是可以自己进行同步的，无需认为同步。</p>
+<p><strong>自同步流密码可能会对错误进行传播</strong>。因为密钥序列的产生与明文序列有关，所以前边明文的加密错误，会导致后边密钥序列生成出错，导致后边明文序列也加密错误。</p>
+<p><strong>CFB模式就属于同步流密码</strong></p>
+<h1>常见流密码</h1>
+<h2 id="rc4">RC4</h2>
+<ul>
+<li>RC4由伪随机数生成器和异或运算组成。</li>
+<li>RC4的密钥长度可变，范围是[1,255]。</li>
+<li>RC4一个字节一个字节地加解密。</li>
+<li>给定一个密钥，伪随机数生成器接受密钥并产生一个S盒。S盒用来加密数据，而且在加密过程中S盒会变化。</li>
+<li>由于异或运算的对合性，RC4加密解密使用同一套算法。</li>
+</ul>
+<p>RC4产生非线性的密钥流序列，先密钥调度算法初始化S表，再伪随机生成算法修改S表选取随机元素作为k<br>
+密钥调度算法</p>
+<ol>
+<li>
+<p>对S表线性填充，S(0)=0,S(1)=1,⋯ \cdots⋯,S(255)=255.   S盒（0-255）</p>
+</li>
+<li>
+<p>种子密钥重复填充K表，K(0)=1,K(1)=2,K(3)=3,K(4)=1,K(5)=2,⋯ ⋯(  K 表只有（1，模)）</p>
+</li>
+<li>
+<pre><code class="language-python">#密钥调度算法
+int j=0
+for i in range(256):
+<pre class="line-numbers language-none"><code class="language-none">
+  	j&#x3D;j+S(i)+K(i)(mod256)
+  	t&#x3D;S(i)
+  	  #&#x2F;交换S(i)、S(j)、swap(S(i),S(j));
+  	S(i)&#x3D;S(j)
+  	S(j)&#x3D;t
+
+  #伪随机生成算法
+  i&#x3D;0,j&#x3D;0
+  i&#x3D;i+1(mod256)
+  j&#x3D;j+S(i)(mod256)
+  #交换S(i)、S(j)
+  t&#x3D;S(i)+S(j)(mod256)
+  #输出密钥字
+  k&#x3D;S(t)
+
+  
+
+  &#96;&#96;&#96;python
+  伪随机生成算法
+4. i&#x3D;0,j&#x3D;0
+5. i&#x3D;i+1(mod256)
+6. j&#x3D;j+S(i)(mod256)
+7. 交换S(i)、S(j)
+8. t&#x3D;S(i)+S(j)(mod256)
+9. 输出密钥字k&#x3D;S(t)
+
+
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</code></pre>
+</li>
+</ol>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://example.com">miaomiao</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://example.com/post/fb8b77a1.html">http://example.com/post/fb8b77a1.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">Miaoo~</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E6%B5%81%E5%AF%86%E7%A0%81/">流密码</a></div><div class="post_share"><div class="social-share" data-image="https://s1.ax1x.com/2023/05/13/p96pI91.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/post/59a1b91b.html" title="MT19937"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s1.ax1x.com/2023/05/13/p96p7jK.jpg" onerror="onerror=null;src='/img/4044.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">MT19937</div></div></a></div><div class="next-post pull-right"><a href="/post/1bc219ca.html" title="CISCN 2021华南 matryoshka"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s1.ax1x.com/2023/05/13/p96p4hR.jpg" onerror="onerror=null;src='/img/4044.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">CISCN 2021华南 matryoshka</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/66.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">miaomiao</div><div class="author-info__description">偶尔可恶 永远可爱wo~</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">15</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">13</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">5</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Miao-25"><i class="fab fa-github"></i><span>欢迎来到米奇妙妙屋~</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/Miao-25" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">流密码（Stream cipher）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E5%85%83%E5%8A%A0%E6%B3%95%E6%B5%81%E5%AF%86%E7%A0%81"><span class="toc-number">1.1.</span> <span class="toc-text">二元加法流密码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E6%AC%A1%E4%B8%80%E5%AF%86-one-time-pad"><span class="toc-number">1.2.</span> <span class="toc-text">一次一密（one-time pad）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%9A%E6%AC%A1%E4%B8%80%E5%AF%86-many-time-pad-attack"><span class="toc-number">1.3.</span> <span class="toc-text">多次一密（Many Time Pad Attack）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%82%E6%88%96%E8%BF%90%E7%AE%97%E6%80%A7%E8%B4%A8"><span class="toc-number">1.3.1.</span> <span class="toc-text">异或运算性质</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ascii%E8%A1%A8"><span class="toc-number">1.3.2.</span> <span class="toc-text">ascii表</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BE%8B%E9%A2%98-afctf2018-%E4%BD%A0%E5%90%AC%E8%BF%87%E4%B8%80%E6%AC%A1%E4%B8%80%E5%AF%86%E4%B9%88%EF%BC%9F"><span class="toc-number">1.3.3.</span> <span class="toc-text">例题–[AFCTF2018]你听过一次一密么？</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE"><span class="toc-number">1.3.3.1.</span> <span class="toc-text">题目</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BC%AA%E9%9A%8F%E6%9C%BA%E5%AF%86%E9%92%A5%E6%B5%81"><span class="toc-number">1.4.</span> <span class="toc-text">伪随机密钥流</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BC%AA%E9%9A%8F%E6%9C%BA%E5%BA%8F%E5%88%97"><span class="toc-number">1.4.1.</span> <span class="toc-text">伪随机序列</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BC%AA%E9%9A%8F%E6%9C%BA%E6%95%B0%E7%94%9F%E6%88%90%E5%99%A8"><span class="toc-number">1.4.2.</span> <span class="toc-text">伪随机数生成器</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BA%BF%E6%80%A7%E5%90%8C%E4%BD%99%E7%94%9F%E6%88%90%E5%99%A8-%E7%BA%BF%E6%80%A7%E5%90%8C%E4%BD%99%E6%96%B9%E6%B3%95-lcg"><span class="toc-number">1.4.2.1.</span> <span class="toc-text">线性同余生成器 &#x2F; 线性同余方法（LCG）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BA%BF%E6%80%A7%E5%8F%8D%E9%A6%88%E7%A7%BB%E4%BD%8D%E5%AF%84%E5%AD%98%E5%99%A8-linear-feedback-shift-register-%E7%AE%80%E7%A7%B0lfsr"><span class="toc-number">1.4.2.2.</span> <span class="toc-text">线性反馈移位寄存器（Linear Feedback Shift Register，简称LFSR）</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#mt19937-%E6%A2%85%E6%A3%AE%E6%97%8B%E8%BD%AC%E7%AE%97%E6%B3%95-mersenne-twister-algorithm-%E7%AE%80%E7%A7%B0-mt"><span class="toc-number">1.4.3.</span> <span class="toc-text">MT19937（梅森旋转算法（Mersenne Twister Algorithm，简称 MT））</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AE%97%E6%B3%95"><span class="toc-number">1.4.3.1.</span> <span class="toc-text">算法</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E9%98%B6%E6%AE%B5"><span class="toc-number">1.4.3.1.1.</span> <span class="toc-text">第一阶段</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E9%98%B6%E6%AE%B5"><span class="toc-number">1.4.3.1.2.</span> <span class="toc-text">第二阶段</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E9%98%B6%E6%AE%B5"><span class="toc-number">1.4.3.1.3.</span> <span class="toc-text">第三阶段</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%A0%B4%E8%A7%A3"><span class="toc-number">1.4.3.2.</span> <span class="toc-text">破解</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%8F%B3%E7%A7%BB%E4%BD%8D%E5%90%8E%E5%BC%82%E6%88%96%E9%80%86%E5%90%91"><span class="toc-number">1.4.3.2.1.</span> <span class="toc-text">右移位后异或逆向</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%B7%A6%E7%A7%BB%E4%BD%8D%E5%90%8E%E5%BC%82%E6%88%96%E9%80%86%E5%90%91"><span class="toc-number">1.4.3.2.2.</span> <span class="toc-text">左移位后异或逆向</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%8F%90%E5%8F%96%E4%BC%AA%E9%9A%8F%E6%9C%BA%E6%95%B0%E9%80%86%E5%90%91"><span class="toc-number">1.4.3.2.3.</span> <span class="toc-text">提取伪随机数逆向</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E9%80%9A%E8%BF%87%E8%BE%93%E5%87%BA%E5%8F%82%E6%95%B0%E9%80%86%E5%90%91"><span class="toc-number">1.4.3.2.4.</span> <span class="toc-text">通过输出参数逆向</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%AE%8C%E6%95%B4%E4%BB%A3%E7%A0%81"><span class="toc-number">1.4.3.2.5.</span> <span class="toc-text">完整代码</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">2.</span> <span class="toc-text">流密码的分类</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%8C%E6%AD%A5%E6%B5%81%E5%AF%86%E7%A0%81"><span class="toc-number">2.1.</span> <span class="toc-text">同步流密码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%87%AA%E5%90%8C%E6%AD%A5%E6%B5%81%E5%AF%86%E7%A0%81"><span class="toc-number">2.2.</span> <span class="toc-text">自同步流密码</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">3.</span> <span class="toc-text">常见流密码</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#rc4"><span class="toc-number">3.1.</span> <span class="toc-text">RC4</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/post/0.html" title="无题"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s1.ax1x.com/2023/05/13/p96pTc6.jpg" onerror="this.onerror=null;this.src='/img/4044.jpg'" alt="无题"/></a><div class="content"><a class="title" href="/post/0.html" title="无题">无题</a><time datetime="2023-07-18T12:14:43.242Z" title="发表于 2023-07-18 20:14:43">2023-07-18</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/59a1b91b.html" title="MT19937"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s1.ax1x.com/2023/05/13/p96p7jK.jpg" onerror="this.onerror=null;this.src='/img/4044.jpg'" alt="MT19937"/></a><div class="content"><a class="title" href="/post/59a1b91b.html" title="MT19937">MT19937</a><time datetime="2023-07-18T05:14:06.000Z" title="发表于 2023-07-18 13:14:06">2023-07-18</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/fb8b77a1.html" title="流密码"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s1.ax1x.com/2023/05/13/p96pI91.jpg" onerror="this.onerror=null;this.src='/img/4044.jpg'" alt="流密码"/></a><div class="content"><a class="title" href="/post/fb8b77a1.html" title="流密码">流密码</a><time datetime="2023-07-16T12:08:00.000Z" title="发表于 2023-07-16 20:08:00">2023-07-16</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/1bc219ca.html" title="CISCN 2021华南 matryoshka"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s1.ax1x.com/2023/05/13/p96p4hR.jpg" onerror="this.onerror=null;this.src='/img/4044.jpg'" alt="CISCN 2021华南 matryoshka"/></a><div class="content"><a class="title" href="/post/1bc219ca.html" title="CISCN 2021华南 matryoshka">CISCN 2021华南 matryoshka</a><time datetime="2023-07-16T11:49:47.000Z" title="发表于 2023-07-16 19:49:47">2023-07-16</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/2cf738e6.html" title="中国剩余定理"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s1.ax1x.com/2023/05/13/p96pfAJ.jpg" onerror="this.onerror=null;this.src='/img/4044.jpg'" alt="中国剩余定理"/></a><div class="content"><a class="title" href="/post/2cf738e6.html" title="中国剩余定理">中国剩余定理</a><time datetime="2023-07-14T04:35:20.000Z" title="发表于 2023-07-14 12:35:20">2023-07-14</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('https://s1.ax1x.com/2023/05/13/p96pI91.jpg')"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By miaomiao</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.iife.min.js"></script><script>function panguFn () {
+  if (typeof pangu === 'object') pangu.autoSpacingPage()
+  else {
+    getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js')
+      .then(() => {
+        pangu.autoSpacingPage()
+      })
+  }
+}
+
+function panguInit () {
+  if (false){
+    GLOBAL_CONFIG_SITE.isPost && panguFn()
+  } else {
+    panguFn()
+  }
+}
+
+document.addEventListener('DOMContentLoaded', panguInit)</script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.1
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        insertScript: [200, () => {
+          document.querySelectorAll('mjx-container').forEach(node => {
+            if (node.hasAttribute('display')) {
+              btf.wrap(node, 'div', { class: 'mathjax-overflow' })
+            } else {
+              btf.wrap(node, 'span', { class: 'mathjax-overflow' })
+            }
+          });
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax/es5/tex-mml-chtml.min.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typesetPromise()
+}</script></div><script src="xxxx"></script><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="30" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><script id="click-heart" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/click-heart.min.js" async="async" mobile="false"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div class="no-result" id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div></div></body></html>
